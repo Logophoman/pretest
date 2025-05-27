@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forschungsmethoden C - Sitzung 7: Pretest</title>
+    <style>
+        /* --- Root Variables and Basic Styles (Angelehnt an Vorwoche) --- */
+        :root {
+            --uni-hohenheim-blue: #003560;
+            --uni-hohenheim-lightblue: #0073a0;
+            --text-color: #333;
+            --heading-color: var(--uni-hohenheim-blue);
+            --background-color: #f8f9fa;
+            --box-background: #ffffff;
+            --border-color: #dee2e6;
+            --accent-color: #e85f3e;
+            /* Hohenheim Orange/Red accent */
+            --highlight-bg: #fffadd;
+            --highlight-border: #f1c40f;
+            --task-bg: #eef7ff;
+            --task-border: #bce0fd;
+            --pitfall-bg: #fff0f0;
+            /* Light red background for pitfalls */
+            --pitfall-border: #f5c6cb;
+            --pitfall-color: #721c24;
+            --success-bg: #d4edda; /* Light green for success/important announcements */
+            --success-border: #c3e6cb;
+            --success-color: #155724;
+            --animation-duration-base: 0.6s;
+            --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+
+        body {
+            font-family: var(--font-family);
+            line-height: 1.7;
+            color: var(--text-color);
+            background-color: var(--background-color);
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 20px auto;
+            background-color: var(--box-background);
+            padding: 30px 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        /* --- Header Styles (wie Vorwoche) --- */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--uni-hohenheim-blue);
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        header .course-info h1 {
+            margin: 0;
+            font-size: 1.8em;
+            color: var(--heading-color);
+        }
+
+        header .course-info p {
+            margin: 5px 0 0;
+            font-size: 0.95em;
+            color: #555;
+        }
+
+        header .uni-logo img {
+            max-height: 60px;
+            width: auto;
+        }
+
+        /* --- Headings and Text Styles (wie Vorwoche) --- */
+        h2,
+        h3 {
+            color: var(--heading-color);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 8px;
+            margin-top: 40px;
+            margin-bottom: 20px;
+        }
+
+        h3 {
+            border-bottom: none;
+            margin-top: 30px;
+            font-size: 1.3em;
+            color: var(--uni-hohenheim-lightblue);
+        }
+
+        h4 {
+            color: var(--uni-hohenheim-blue);
+            margin-top: 25px;
+            margin-bottom: 10px;
+            font-size: 1.15em;
+        }
+
+        p,
+        ul,
+        li {
+            margin-bottom: 1em;
+        }
+
+        ul {
+            padding-left: 25px;
+            list-style-type: square;
+        }
+        ul.checklist {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        ul.checklist li {
+            margin-bottom: 0.5em;
+            display: flex;
+            align-items: center;
+        }
+        ul.checklist input[type="checkbox"] {
+            margin-right: 10px;
+            transform: scale(1.2);
+            accent-color: var(--uni-hohenheim-blue);
+        }
+
+
+        li::marker {
+            color: var(--uni-hohenheim-lightblue);
+        }
+
+        strong {
+            color: var(--uni-hohenheim-blue);
+            font-weight: 600;
+        }
+
+        code {
+            background-color: #e9ecef;
+            padding: 0.2em 0.4em;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+
+        blockquote {
+            border-left: 4px solid var(--uni-hohenheim-lightblue);
+            padding-left: 20px;
+            margin: 20px 0;
+            font-style: italic;
+            color: #555;
+            background-color: #f8f9fa;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            border-radius: 0 4px 4px 0;
+        }
+
+        blockquote footer {
+            font-style: normal;
+            font-size: 0.9em;
+            text-align: right;
+            margin-top: 5px;
+            color: #6c757d;
+        }
+
+        /* --- Box Styles (wie Vorwoche, mit success-box) --- */
+        .task-box,
+        .info-box,
+        .group-guidance-box,
+        .pitfall-box,
+        .success-box {
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 4px;
+            border: 1px solid;
+            border-left-width: 5px;
+        }
+
+        .task-box {
+            background-color: var(--task-bg);
+            border-color: var(--task-border);
+            border-left-color: var(--uni-hohenheim-blue);
+        }
+
+        .task-box h2 {
+            margin-top: 0;
+            border-bottom: none;
+            color: var(--uni-hohenheim-blue);
+        }
+
+        .info-box {
+            background-color: var(--highlight-bg);
+            border-color: var(--highlight-border);
+            border-left-color: var(--highlight-border);
+            padding: 15px;
+        }
+
+        .info-box strong {
+            color: #c89c0c;
+        }
+
+        .success-box {
+            background-color: var(--success-bg);
+            border-color: var(--success-border);
+            border-left-color: var(--success-color);
+            color: var(--success-color);
+        }
+        .success-box h3 {
+            color: var(--success-color);
+            margin-top: 0;
+            border-bottom: 1px solid var(--success-border);
+        }
+        .success-box strong {
+            color: var(--success-color);
+            font-weight: bold;
+        }
+
+
+        .group-guidance-box {
+            background-color: #f0f8ff;
+            border-color: #cce5ff;
+            border-left-color: var(--uni-hohenheim-lightblue);
+            margin-top: 20px;
+        }
+
+        .group-guidance-box h4 {
+            margin-top: 0;
+            border-bottom: 1px dotted var(--uni-hohenheim-lightblue);
+            padding-bottom: 5px;
+            color: var(--uni-hohenheim-lightblue);
+        }
+
+        .pitfall-box {
+            background-color: var(--pitfall-bg);
+            border-color: var(--pitfall-border);
+            border-left-color: var(--accent-color);
+            color: var(--pitfall-color);
+        }
+
+        .pitfall-box h3 {
+            color: var(--pitfall-color);
+            border-bottom: none;
+            margin-top: 0;
+        }
+
+        .pitfall-box strong {
+            color: var(--accent-color);
+        }
+
+        /* --- Footer Styles (wie Vorwoche) --- */
+        footer.page-footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.85em;
+            color: #6c757d;
+        }
+
+        /* --- Base Animation: FadeInUp (wie Vorwoche) --- */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animated-on-scroll {
+            opacity: 0;
+            transition: opacity var(--animation-duration-base) ease-out;
+        }
+
+        .animated-on-scroll.is-visible {
+            opacity: 1;
+            animation: fadeInUp var(--animation-duration-base) ease-out forwards;
+        }
+        
+        /* Table Style für ICR Maße */
+        table.icr-measures {
+            width: 100%;
+            margin: 20px 0;
+            border-collapse: collapse;
+            font-size: 0.9em;
+        }
+        table.icr-measures th, table.icr-measures td {
+            border: 1px solid var(--border-color);
+            padding: 8px 10px;
+            text-align: left;
+            vertical-align: top;
+        }
+        table.icr-measures th {
+            background-color: #e9ecef;
+            color: var(--uni-hohenheim-blue);
+        }
+
+        /* --- Responsive adjustments (wie Vorwoche) --- */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 15px;
+            }
+
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            header .uni-logo {
+                margin-top: 15px;
+                align-self: center;
+            }
+
+            h1 {
+                font-size: 1.6em;
+            }
+
+            h2 {
+                font-size: 1.4em;
+            }
+
+            h3 {
+                font-size: 1.2em;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <header>
+            <div class="course-info">
+                <h1>Forschungsmethoden C</h1>
+                <p>Universität Hohenheim | Sommersemester 2025<br>
+                    Andreas Reich | Sitzung 7: Pretest – Die Generalprobe</p>
+            </div>
+            <div class="uni-logo">
+                <img src="logo.png" alt="Logo Universität Hohenheim">
+            </div>
+        </header>
+
+        <div class="success-box animated-on-scroll">
+            <h3>Wichtige Ankündigung zur Endabgabe!</h3>
+            <p>Es gibt eine wichtige Anpassung bezüglich der Anforderungen für die Endabgabe in diesem Kurs:</p>
+            <ul>
+                <li>Die ursprünglich geplante, ausführliche <strong>Gesamtdokumentation am Ende des Semesters entfällt</strong>.</li>
+                <li>Bewertet wird stattdessen eure <strong>finale Endpräsentation</strong> (die gehaltene Präsentation sowie die dazugehörige Präsentationsdatei als PPTX/PDF).</li>
+            </ul>
+            <p>Diese Änderung soll euch ermöglichen, den Fokus stärker auf die Aufbereitung eurer Ergebnisse für die Präsentation zu legen und den Workload in der Prüfungszeit verringern. Alle anderen Aufgaben und Abgaben bleiben wie besprochen bestehen.</p>
+        </div>
+
+        <main>
+            <section id="introduction" class="animated-on-scroll">
+                <h2>Der Pretest: Generalprobe für Eure Forschung</h2>
+                <p>Willkommen zur siebten Sitzung! Nachdem ihr eure Untersuchungsinstrumente sorgfältig geplant und entworfen habt, steht nun ein entscheidender Schritt bevor: der <strong>Pretest</strong>. Man könnte ihn auch als Generalprobe eurer empirischen Untersuchung bezeichnen.</p>
+                <p>Im Pretest erprobt ihr euer Instrument (Fragebogen, Codebuch, Experiment) und Teile eures Stichprobenplans unter möglichst realistischen Bedingungen mit einer kleinen Anzahl von Testpersonen oder Testmaterialien. Ziel ist es, Schwachstellen, Unklarheiten und praktische Probleme zu identifizieren, <strong>bevor</strong> ihr mit der eigentlichen Hauptdatenerhebung (der Feldphase) beginnt.</p>
+                <blockquote>
+                    Der Pretest ist ein Testlauf des Untersuchungsinstruments und -ablaufs in einer verkleinerten Stichprobe, der dazu dient, Fehler und Schwächen vor der eigentlichen Datenerhebung zu erkennen und zu beheben.
+                </blockquote>
+                <p>Ein gut durchgeführter Pretest ist Gold wert: Er spart Zeit, Geld und Nerven, indem er verhindert, dass ihr mit einem fehlerhaften Instrument in die Hauptstudie geht. Der Prozess ist iterativ: Pretest durchführen -> Probleme identifizieren -> Instrument anpassen -> (ggf. erneuter kleiner Pretest) -> Start der Feldphase.</p>
+            </section>
+
+            <section id="task-definition" class="animated-on-scroll">
+                <div class="task-box">
+                    <h2>Aufgabe 7: Durchführung und Auswertung des Pretests</h2>
+                    <p>In dieser Woche führt ihr den Pretest eures entwickelten Untersuchungsinstruments und -designs durch. Ihr prüft die Praxistauglichkeit eurer Planung und nehmt basierend auf den Ergebnissen notwendige Anpassungen vor.</p>
+                    
+                    <h3>Ziele des Pretests:</h3>
+                    <ul>
+                        <li>Test des <strong>Untersuchungsinstruments</strong> auf Verständlichkeit, Eindeutigkeit, Länge, technische Funktion (z.B. Fragebogen, Experimentablauf, Anwendbarkeit des Codebuchs).</li>
+                        <li>Test des <strong>Stichprobenplans</strong> auf praktische Tauglichkeit (Fokus auf Rekrutierungswege und Erreichbarkeit der Zielgruppe/des Materials – basierend auf euren festgelegten Testpersonenzahlen/-materialien).</li>
+                        <li>Test der <strong>Datenerfassung und -eingabe</strong> (Funktioniert das Instrument so, dass die Daten wie geplant erfasst werden?).</li>
+                    </ul>
+
+                    <h3>Teilaufgaben:</h3>
+                    <ol>
+                        <li><strong>Instrument erproben:</strong> Führt den Pretest mit euren zuvor festgelegten Testpersonen (Befragung/Experiment) oder Testmaterialien (Inhaltsanalyse) durch.</li>
+                        <li><strong>Feedback systematisch erfassen:</strong> Notiert alle Probleme, Unklarheiten, Anmerkungen der Testpersonen oder Schwierigkeiten beim Codieren. Nutzt ggf. Beobachtung, Think-Aloud-Methoden oder kurze Nachbefragungen der Testpersonen.</li>
+                        <li><strong>(Nur für Inhaltsanalyse-Gruppe): Intercoder-Reliabilität (ICR) berechnen:</strong> Mindestens zwei Gruppenmitglieder codieren einen Teil des Pretest-Materials unabhängig voneinander. Berechnet und interpretiert geeignete ICR-Koeffizienten für zentrale Variablen.</li>
+                        <li><strong>Anpassungen ableiten und vornehmen:</strong> Analysiert die Pretest-Ergebnisse. Welche Änderungen sind am Instrument, an den Anweisungen oder am Ablauf nötig? Setzt diese Änderungen um.</li>
+                        <li><strong>Dokumentation erstellen:</strong> Verfasst einen Bericht (3-7 Seiten) über Durchführung, Ergebnisse und die abgeleiteten Anpassungen.</li>
+                    </ol>
+
+                    <h3>Checkliste für Aufgabe 7:</h3>
+                    <ul class="checklist" id="checklist-task7">
+                        <li><label><input type="checkbox"><span>Pretest-Durchführung mit festgelegter Anzahl Testpersonen/Materialien erfolgt?</span></label></li>
+                        <li><label><input type="checkbox"><span>Feedback von Testpersonen / Beobachtungen während der Durchführung systematisch dokumentiert?</span></label></li>
+                        <li><label><input type="checkbox"><span>(IA): Mind. zwei Mitglieder haben einen Teil des Materials unabhängig codiert?</span></label></li>
+                        <li><label><input type="checkbox"><span>(IA): Geeignete ICR-Koeffizienten für Schlüsselvariablen berechnet?</span></label></li>
+                        <li><label><input type="checkbox"><span>(IA): ICR-Ergebnisse interpretiert und ggf. Maßnahmen zur Verbesserung geplant/umgesetzt?</span></label></li>
+                        <li><label><input type="checkbox"><span>Alle identifizierten Probleme und Schwachstellen des Instruments analysiert?</span></label></li>
+                        <li><label><input type="checkbox"><span>Notwendige Anpassungen am Untersuchungsinstrument (Fragebogen, Codebuch, Stimuli, Ablauf) vorgenommen?</span></label></li>
+                        <li><label><input type="checkbox"><span>(B&E):Überlegungen zur Praktikabilität des Stichprobenplans (Rekrutierung) basierend auf Pretest-Erfahrungen angestellt?</span></label></li>
+                        <li><label><input type="checkbox"><span>Text-Dokumentation (3-7 Seiten) des Pretests (Durchführung, Ergebnisse, Anpassungen) erstellt?</span></label></li>
+                        <li><label><input type="checkbox"><span>Überarbeitete (finale) Version des Untersuchungsinstruments erstellt? Ready für die Feldphase?</span></label></li>
+                    </ul>
+
+                    <h3>Abgabe & Präsentation:</h3>
+                     <ul>
+                        <li><strong>Abgabe:</strong> Ladet die <strong>Text-Dokumentation</strong> des Pretests UND die <strong>überarbeiteten (finalen) Instrumente</strong> (z.B. Screenshots, XML-Export, Link mit Zugangsdaten, Codebuch-Datei) bis <strong>Montagabend (nächste Woche), 20:00 Uhr</strong> auf ILIAS hoch.</li>
+                        <li><strong>Präsentation:</strong> Bereitet eine Präsentation eurer Pretest-Durchführung, der wichtigsten Ergebnisse und eurer finalen Instrumente für die Sitzung am <strong>kommenden Mittwoch</strong> vor (Folien bis Mittwoch hochladen).</li>
+                     </ul>
+                </div>
+            </section>
+
+            <section id="theory-pretest" class="animated-on-scroll">
+                <h2>Was und Wie im Pretest prüfen?</h2>
+                <p>Ein Pretest ist mehr als nur ein "mal kurz drüberschauen". Er sollte systematisch erfolgen, um möglichst viele potenzielle Probleme aufzudecken.</p>
+
+                <h3>Generelle Aspekte, die im Pretest geprüft werden sollten:</h3>
+                <ul>
+                    <li><strong>Verständlichkeit:</strong> Verstehen die Testpersonen die Fragen/Instruktionen/Kategorien so, wie sie gemeint sind? Gibt es unklare Formulierungen, Fremdwörter oder doppeldeutige Begriffe?</li>
+                    <li><strong>Eindeutigkeit:</strong> Sind die Fragen und Antwortoptionen bzw. Codiervorgaben eindeutig? Gibt es Interpretationsspielraum?</li>
+                    <li><strong>Vollständigkeit (Antwortkategorien/Codeausprägungen):</strong> Fehlen wichtige Antwortoptionen? Sind die Kategorien im Codebuch erschöpfend für das Material?</li>
+                    <li><strong>Reihenfolgeeffekte:</strong> Beeinflusst die Reihenfolge von Fragen oder Aufgaben das Antwortverhalten? (Schwieriger zu testen in kleinen Pretests, aber ggf. auffällig).</li>
+                    <li><strong>Länge und Dauer:</strong> Ist der Fragebogen/das Experiment/die Codierung zu lang oder ermüdend? Wie lange dauert die Bearbeitung realistisch?</li>
+                    <li><strong>Technische Funktionalität:</strong> Funktionieren alle Filter, Sprünge, Einbettungen von Stimuli (z.B. in SoSci Survey) korrekt? Ist das Codebuch-Layout praktisch?</li>
+                    <li><strong>Emotionale Reaktion:</strong> Lösen bestimmte Fragen oder Stimuli unerwünschte Reaktionen aus (z.B. Verärgerung, Langeweile, Verwirrung)?</li>
+                    <li><strong>Layout und Benutzerfreundlichkeit:</strong> Ist das Instrument übersichtlich und ansprechend gestaltet?</li>
+                </ul>
+
+                <h3>Methoden zur Pretest-Durchführung:</h3>
+                <ul>
+                    <li><strong>Standardisierter Pretest:</strong> Die Testpersonen füllen den Fragebogen aus / nehmen am Experiment teil / codieren das Material, und geben danach (oder währenddessen bei Think-Aloud) Feedback.</li>
+                    <li><strong>Beobachtung:</strong> Beobachtet die Testpersonen (mit deren Erlaubnis) bei der Bearbeitung. Achtet auf Zögern, Mimik, Nachfragen.</li>
+                    <li><strong>Think-Aloud-Methode (Lautes Denken):</strong> Bittet Testpersonen, während der Bearbeitung ihre Gedanken laut auszusprechen. Dies gibt direkte Einblicke in Verstehensprozesse und Probleme.</li>
+                    <li><strong>Debriefing/Nachbefragung:</strong> Führt nach dem Test ein kurzes Interview mit den Testpersonen. Fragt gezielt nach Schwierigkeiten, unklaren Punkten oder Verbesserungsvorschlägen.</li>
+                    <li><strong>Experten-Rating (für Codebücher/Stimuli):</strong> Lasst andere (ggf. Kommilitonen) euer Codebuch oder eure Stimuli auf Klarheit und Eignung prüfen.</li>
+                </ul>
+                 <div class="info-box">
+                    <strong>Wichtig:</strong> Dokumentiert alle während des Pretests auftretenden Probleme, das gegebene Feedback und eure Beobachtungen sorgfältig. Diese Notizen sind die Basis für die Überarbeitung eures Instruments!
+                </div>
+            </section>
+
+            <section id="method-specifics" class="animated-on-scroll">
+                <h2>Spezifische Hinweise für die Pretest-Durchführung</h2>
+
+                <!-- ===== GRUPPE BEFRAGUNG ===== -->
+                <div class="group-guidance-box">
+                    <h4>Gruppe C: Befragung (KI & Arbeitswelt)</h4>
+                    <p>Für eure Online-Befragung sind folgende Aspekte im Pretest besonders relevant:</p>
+                    <ul>
+                        <li><strong>Frageverständnis:</strong> Sind die Fragen zu KI-Einsatz, Arbeitsplatzsicherheit und Arbeitszufriedenheit klar und unmissverständlich für Personen aus unterschiedlichen Berufsgruppen (Pflege, IT, Verwaltung, Bildung)? Achtet auf Fachbegriffe!</li>
+                        <li><strong>Antwortkategorien:</strong> Sind die Skalenstufen (z.B. bei Zustimmung, Häufigkeit) klar definiert und die Abstände nachvollziehbar? Gibt es für alle relevanten demografischen Merkmale passende Optionen?</li>
+                        <li><strong>Filterführung & Logik (in SoSci Survey):</strong> Funktionieren alle programmierten Filter (z.B. je nach Berufsgruppe unterschiedliche Fragenblöcke) korrekt? Werden Fragen übersprungen oder angezeigt wie geplant?</li>
+                        <li><strong>Länge des Fragebogens:</strong> Wie lange dauert das Ausfüllen realistisch? Ist die Dauer zumutbar, um Abbruchquoten gering zu halten?</li>
+                        <li><strong>Sensible Fragen:</strong> Gibt es Fragen (z.B. zur wahrgenommenen Bedrohung des Arbeitsplatzes), die bei Testpersonen Unbehagen auslösen? Wie geht ihr damit um?</li>
+                        <li><strong>Technische Aspekte:</strong> Lässt sich der Fragebogen auf verschiedenen Geräten (Desktop, Tablet, Smartphone) gut bedienen?</li>
+                    </ul>
+                    <p><strong>Tipp:</strong> Versucht, Testpersonen aus euren unterschiedlichen Ziel-Berufsgruppen für den Pretest zu gewinnen, um spezifisches Feedback zu erhalten. Das ist insbesondere dann wichtig, wenn z.B. eine Gruppe
+                         (insbesondere Sozialer Bereich!) unter Umständen nichts mit den KI-Formulierungen anfangen kann - die Fragen sollen ja für alle funktionieren.</p>
+                </div>
+
+                <!-- ===== GRUPPE EXPERIMENT ===== -->
+                <div class="group-guidance-box">
+                    <h4>Gruppe C: Experiment (KI-Labeling & Reputation)</h4>
+                    <p>Im experimentellen Pretest testet ihr nicht nur den Fragebogen, sondern den gesamten Ablauf und die Stimuli:</p>
+                    <ul>
+                        <li><strong>Stimuluswahrnehmung:</strong> Ist das KI-Label (in der entsprechenden Bedingung) klar sichtbar und verständlich? Wirkt der Instagram-Post (Mock-up) realistisch und professionell genug (im Stil der Tagesschau)? Sind die unterschiedlichen Themenbereiche klar erkennbar?</li>
+                        <li><strong>Verständnis der abhängigen Variablen:</strong> Sind die Items zur Messung von Glaubwürdigkeit, Authentizität und Reputation klar? Verstehen die Testpersonen, worauf sich die Fragen beziehen (auf den Post, auf die Tagesschau allgemein)?</li>
+                        <li><strong>Ablauf und Instruktionen:</strong> Ist der gesamte Ablauf des Experiments (Einleitung, Stimuluspräsentation, Fragebogenteil) logisch und verständlich? Sind die Instruktionen klar?</li>
+                        <li><strong>Randomisierung (technisch):</strong> Prüft, ob die zufällige Zuweisung zu den Experimentalgruppen in SoSci Survey technisch funktioniert.</li>
+                        <li><strong>Dauer des Experiments:</strong> Wie lange dauert die Teilnahme insgesamt?</li>
+                        <li><strong>Mögliche Störfaktoren:</strong> Gibt es Elemente im Ablauf oder in den Stimuli, die unbeabsichtigt ablenken oder das Ergebnis verzerren könnten?</li>
+                        <li><strong>Technische Aspekte:</strong> Lässt sich der Fragebogen auf verschiedenen Geräten (Desktop, Tablet, Smartphone) gut bedienen?</li>
+                    </ul>
+                    <p><strong>Tipp:</strong> Beobachtet (wenn möglich) eine Testperson bei der Durchführung oder nutzt die Think-Aloud-Methode, um direkte Einblicke in die Wahrnehmung der Stimuli und des Ablaufs zu bekommen.</p>
+                </div>
+
+                <!-- ===== GRUPPE INHALTSANALYSE ===== -->
+                <div class="group-guidance-box">
+                    <h4>Gruppe C: Inhaltsanalyse (Politiker in KI-Videos)</h4>
+                    <p>Für die Inhaltsanalyse ist der Pretest vor allem ein Test eures Codebuchs und des Codierprozesses, mit dem Ziel einer hohen Intercoder-Reliabilität (ICR).</p>
+                    <ul>
+                        <li><strong>Anwendbarkeit des Codebuchs:</strong>
+                            <ul>
+                                <li>Sind alle <strong>Kategorien</strong> klar definiert und voneinander abgrenzbar?</li>
+                                <li>Sind die <strong>Ausprägungen</strong> pro Kategorie erschöpfend (decken alle Möglichkeiten ab) und exklusiv (keine Überschneidungen)?</li>
+                                <li>Sind die <strong>Codierregeln und Ankerbeispiele</strong> hilfreich und eindeutig, um Entscheidungen in Zweifelsfällen zu treffen?</li>
+                            </ul>
+                        </li>
+                        <li><strong>Identifikation von Problemfällen:</strong> Welche Videos oder Merkmale sind besonders schwer zu codieren? Wo treten häufig Unstimmigkeiten zwischen Codierern auf?</li>
+                        <li><strong>Zeitaufwand:</strong> Wie lange dauert die Codierung eines durchschnittlichen Videos? Ist der Gesamtumfang eurer geplanten Stichprobe realistisch codierbar?</li>
+                        <li><strong>Intercoder-Reliabilität (ICR) prüfen:</strong>
+                            <ul>
+                                <li><strong>Vorgehen:</strong> Zwei oder drei AG-Mitglieder codieren einen identischen, repräsentativen Teil des Pretest-Materials <strong>unabhängig</strong> voneinander.</li>
+                                <li><strong>Geeignete Maße (kurz angerissen):</strong>
+                                    <table class="icr-measures">
+                                        <thead>
+                                            <tr>
+                                                <th>Maß</th>
+                                                <th>Kurzbeschreibung</th>
+                                                <th>Anwendungshinweis</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><strong>Prozentuale Übereinstimmung (P<sub>o</sub>)</strong></td>
+                                                <td>Einfachster Wert: Anteil der übereinstimmenden Codierungen an allen Codierungen. Nicht alleine ausreichend.</td>
+                                                <td>Überschätzt oft die tatsächliche Reliabilität, da Zufallsübereinstimmungen nicht berücksichtigt werden. Als erster Anhaltspunkt okay.</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Cohen's Kappa (κ)</strong></td>
+                                                <td>Berücksichtigt und korrigiert Zufallsübereinstimmungen. Für nominale Variablen und <strong>zwei</strong> Codierer.</td>
+                                                <td>Weit verbreitet. Werte > 0.7 gelten oft als gut, > 0.8 als sehr gut (Kontextabhängig!). Beeinflusst durch Randverteilungen.</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Scott's Pi (π)</strong></td>
+                                                <td>Ähnlich wie Kappa, korrigiert ebenfalls für Zufall. Annahme über Zufallsübereinstimmung etwas anders.</td>
+                                                <td>Alternative zu Kappa, wenn dessen Voraussetzungen nicht ideal sind.</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Krippendorff's Alpha (α)</strong></td>
+                                                <td>Sehr flexibles Maß. Für beliebig viele Codierer, verschiedene Skalenniveaus (nominal, ordinal, metrisch) und Umgang mit fehlenden Werten.</td>
+                                                <td>Gilt als robustestes Maß (Königsklasse), aber Berechnung etwas komplexer (oft Software nötig - aber da hilft KI). Empfehlenswert, wenn Voraussetzungen für Kappa/Pi nicht ideal bzw. ambitionen hoch sind.</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </li>
+                                <li><strong>Interpretation und Maßnahmen:</strong> Werte unter ca. 0.6-0.7 (je nach Maß und Variable) deuten auf Probleme hin. Diskutiert die Ursachen für Nicht-Übereinstimmungen: Sind Kategorien unklar? Fehlen Regeln? Müssen Codierer nachgeschult werden? Überarbeitet das Codebuch entsprechend.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <p><strong>Tipp:</strong> Führt nach der unabhängigen Codierung eine Konsenssitzung durch, in der ihr alle abweichenden Codierungen besprecht. Das hilft enorm, das Codebuch zu verbessern.</p>
+                </div>
+            </section>
+
+            <section id="documentation" class="animated-on-scroll">
+                <h2>Dokumentation des Pretests</h2>
+                <p>Die Ergebnisse eures Pretests und die daraus resultierenden Anpassungen müssen sorgfältig dokumentiert werden. Dieser Bericht (ca. 3-7 Seiten) könnte folgende Elemente enthalten:</p>
+                <ul>
+                    <li><strong>Beschreibung der Pretest-Durchführung:</strong>
+                        <ul>
+                            <li>Wer hat teilgenommen (Anzahl, Merkmale der Testpersonen/des Testmaterials)?</li>
+                            <li>Wie wurde der Pretest durchgeführt (z.B. online, Labor, Think-Aloud)?</li>
+                            <li>Wie wurde Feedback gesammelt und dokumentiert?</li>
+                            <li>(Für IA): Wie wurde die ICR-Prüfung organisiert (wer, wie viele Videos, welche Software/Methode zur Berechnung)?</li>
+                        </ul>
+                    </li>
+                    <li><strong>Zentrale Ergebnisse und identifizierte Probleme:</strong>
+                        <ul>
+                            <li>Welche spezifischen Fragen/Items/Kategorien/Stimuli waren problematisch (z.B. unklar, missverständlich, technisch fehlerhaft)? Illustriert mit Beispielen.</li>
+                            <li>Gab es generelle Probleme mit Länge, Ablauf, Layout?</li>
+                            <li>(Für IA): Darstellung und Interpretation der berechneten ICR-Werte für zentrale Variablen. Wo lagen die größten Unstimmigkeiten?</li>
+                        </ul>
+                    </li>
+                    <li><strong>Abgeleitete Änderungen am Untersuchungsinstrument:</strong>
+                        <ul>
+                            <li>Listet die konkreten Änderungen auf, die ihr an eurem Fragebogen, Codebuch oder experimentellen Design vorgenommen habt.</li>
+                            <li><strong>Begründet jede Änderung</strong> basierend auf den Pretest-Erkenntnissen. (z.B. "Frage X wurde umformuliert, weil Testpersonen Y sie missverstanden haben...").</li>
+                            <li>Falls keine Änderungen nötig waren (selten!), begründet auch das (z.B. "Das Instrument erwies sich in allen getesteten Aspekten als robust...").</li>
+                        </ul>
+                    </li>
+                    <li><strong>Überarbeitetes (finales) Instrument:</strong> Verweist auf die separat hochgeladene finale Version eures Instruments.</li>
+                    <li><strong>Fazit zur Praxistauglichkeit:</strong> Eine kurze Einschätzung, ob das Instrument nach den Anpassungen nun für die Hauptdatenerhebung geeignet ist.</li>
+                </ul>
+            </section>
+            
+            <section id="outlook" class="animated-on-scroll">
+                <h2>Ausblick: Nach dem Pretest ist vor der Feldphase</h2>
+                <p>Der Pretest ist ein Meilenstein. Nachdem ihr euer Instrument auf Herz und Nieren geprüft und optimiert habt, seid ihr bereit für den nächsten großen Schritt: die <strong>Feldphase</strong>, also die eigentliche Hauptdatenerhebung mit eurer geplanten Stichprobe.</p>
+                <p>Die Erkenntnisse aus dem Pretest geben euch Sicherheit, dass eure gesammelten Daten von guter Qualität sein werden. Nach der Feldphase folgen dann die spannenden Schritte der <strong>Datenauswertung</strong> gemäß eurer Strategie und schließlich die <strong>Aufbereitung und Präsentation eurer Ergebnisse</strong> in der Endpräsentation.</p>
+                <p>Viel Erfolg bei eurem Pretest!</p>
+            </section>
+
+        </main>
+
+        <footer class="page-footer">
+            <p>© Andreas Reich, Universität Hohenheim, Sommersemester 2025</p>
+        </footer>
+
+    </div>
+
+    <script>
+        // Animations-Skript (wie Vorwoche)
+        document.addEventListener('DOMContentLoaded', () => {
+            const animatedElements = document.querySelectorAll('.animated-on-scroll');
+            const observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 };
+            const observerCallback = (entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            };
+            const observer = new IntersectionObserver(observerCallback, observerOptions);
+            animatedElements.forEach(el => { observer.observe(el); });
+        });
+
+        // Interactivity for Checklist (minimal, no strikethrough for cleaner look)
+        const checklists = document.querySelectorAll('.checklist');
+        checklists.forEach(list => {
+            list.addEventListener('change', (event) => {
+                if (event.target.type === 'checkbox') {
+                    // Optional: Add visual feedback if desired
+                    // const listItem = event.target.closest('li');
+                    // if (listItem) {
+                    //     listItem.style.opacity = event.target.checked ? '0.7' : '1';
+                    // }
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
